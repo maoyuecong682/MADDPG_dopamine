@@ -59,6 +59,25 @@ class BaselineTests(unittest.TestCase):
                 finally:
                     env.close()
 
+    def test_left_turn_background_walker(self):
+        for variant in range(4):
+            with self.subTest(variant=variant):
+                env = Episode("left_turn", 77, variant)
+                try:
+                    positions = []
+                    for _ in range(12):
+                        env.step(np.array([[.2, 0], [.2, 0]]))
+                        index = env.env.smarts.vehicle_index
+                        walkers = [v for v in index.vehicles if v.vehicle_type == "pedestrian"]
+                        self.assertEqual(len(walkers), 1)
+                        self.assertNotIn(walkers[0].id, IDS)
+                        positions.append(walkers[0].pose.position[:2].copy())
+                    np.testing.assert_allclose(np.asarray(positions)[:,0], 90)
+                    np.testing.assert_allclose(np.diff(np.asarray(positions)[:,1]), .12, atol=.001)
+                    self.assertEqual(env.state.shape, (2, OBS_DIM))
+                finally:
+                    env.close()
+
 
 if __name__ == "__main__":
     unittest.main()

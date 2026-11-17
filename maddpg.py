@@ -23,6 +23,9 @@ class Replay:
 
     def sample(self, count, device):
         indices = self.rng.choice(len(self.rows), count, replace=False)
+        return self.batch_at(indices, device)
+
+    def batch_at(self, indices, device):
         return [torch.as_tensor(np.stack(col), device=device, dtype=torch.float32)
                 for col in zip(*(self.rows[i] for i in indices))]
 

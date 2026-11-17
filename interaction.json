@@ -1,0 +1,287 @@
+{
+  "release": "INTERACTION-Dataset-DR-v1_1",
+  "revision": "3587152b529f26649ada0838a308eeaf77f5bdc2",
+  "map_sha256": "a4705887d4ba4cd9027ec9695f1762fd8f20fb20f677593f9b0004b9f7d677f4",
+  "DR_CHN_Merging_ZS": {
+    "recordings": [
+      {
+        "file": "vehicle_tracks_000.csv",
+        "cars": 684,
+        "rows": 108995,
+        "sha256": "aba2f2828aa0b0076e3e3d64e4246e707935cec0940ff742bc95be9247e223f8"
+      },
+      {
+        "file": "vehicle_tracks_001.csv",
+        "cars": 1087,
+        "rows": 179984,
+        "sha256": "7230ba1259b09e60357774ec7559d368b7ca78a781fcd41673b050045b9a1c24"
+      },
+      {
+        "file": "vehicle_tracks_002.csv",
+        "cars": 1039,
+        "rows": 201720,
+        "sha256": "6575e523118a9edc2ffbed406f0bcc94b7bc68e3968d7025a93df00c7bb52e71"
+      },
+      {
+        "file": "vehicle_tracks_003.csv",
+        "cars": 1048,
+        "rows": 206404,
+        "sha256": "077b45b663ac5a2ac68a4ff0cb592434f5f057992662492f05971b3466dfbe5f"
+      },
+      {
+        "file": "vehicle_tracks_004.csv",
+        "cars": 1074,
+        "rows": 175565,
+        "sha256": "3bb378128d1624bae2758fb03b1d25fd6e5d81d0efa7b678f9cead73fe94906d"
+      },
+      {
+        "file": "vehicle_tracks_005.csv",
+        "cars": 992,
+        "rows": 190084,
+        "sha256": "111128bf5fc26e162ce8c660b6e9ef3f83458c8a5d7a29b0092b68d8f9c3b85b"
+      },
+      {
+        "file": "vehicle_tracks_006.csv",
+        "cars": 983,
+        "rows": 209523,
+        "sha256": "7c9ba8f7e62378a8759f17522df41ca8988e8d917dc41208a741f3af69177af2"
+      },
+      {
+        "file": "vehicle_tracks_007.csv",
+        "cars": 1032,
+        "rows": 205337,
+        "sha256": "8c1c0e213dfc594b9a6cc270c41b5b266067366c842ff8de8a2189a8f6984b9f"
+      },
+      {
+        "file": "vehicle_tracks_008.csv",
+        "cars": 904,
+        "rows": 389616,
+        "sha256": "84f27d58cac0f8058d0031ddb9891c9cb8745a3835b918bdcbee0fefb183af3c"
+      },
+      {
+        "file": "vehicle_tracks_009.csv",
+        "cars": 863,
+        "rows": 392062,
+        "sha256": "828a1933639797561cf269fbb8dbc29018db352905d227db444efec770207f84"
+      },
+      {
+        "file": "vehicle_tracks_010.csv",
+        "cars": 651,
+        "rows": 295041,
+        "sha256": "0d46028d4bd2c0e87526501f34bb195b313e0f6edd602e4071c224e949e2115a"
+      }
+    ],
+    "metrics": {
+      "speed_mps": {
+        "n": 255309,
+        "p10": 1.1828,
+        "p25": 1.9948,
+        "p50": 3.5017,
+        "p75": 6.2763,
+        "p90": 10.7065
+      },
+      "neighbors_25m": {
+        "n": 255309,
+        "p10": 8.0,
+        "p25": 11.0,
+        "p50": 14.0,
+        "p75": 22.0,
+        "p90": 26.0
+      },
+      "lane_flow_proxy_vph": {
+        "n": 572,
+        "p10": 498.6439,
+        "p25": 578.6034,
+        "p50": 662.7897,
+        "p75": 726.3373,
+        "p90": 794.958
+      },
+      "change_front_center_m": {
+        "n": 572,
+        "p10": 6.7159,
+        "p25": 7.9232,
+        "p50": 10.526,
+        "p75": 19.7989,
+        "p90": 32.747
+      },
+      "change_rear_center_m": {
+        "n": 632,
+        "p10": 5.3661,
+        "p25": 6.5857,
+        "p50": 10.5776,
+        "p75": 24.1077,
+        "p90": 44.4296
+      },
+      "merge_main_lead_m": {
+        "n": 2190,
+        "p10": -7.1521,
+        "p25": -3.8006,
+        "p50": 0.1271,
+        "p75": 4.4814,
+        "p90": 7.6728
+      }
+    }
+  },
+  "DR_USA_Intersection_MA": {
+    "recordings": [
+      {
+        "file": "vehicle_tracks_000.csv",
+        "cars": 156,
+        "rows": 30472,
+        "sha256": "c19afbfaf39a4f3071ce1fa25ebe208b7696c047599669f83dfc311a8f6e6c02"
+      },
+      {
+        "file": "vehicle_tracks_001.csv",
+        "cars": 184,
+        "rows": 47699,
+        "sha256": "2375fd483b87cf2edefc0d46d2acf82bf6486e9dd96e70c9f8bb5e764381662c"
+      },
+      {
+        "file": "vehicle_tracks_002.csv",
+        "cars": 163,
+        "rows": 41256,
+        "sha256": "bd92a447b2779dfa3e73d28bb2de031f9eb28d993ebee6f518b4e0b4befcf58d"
+      },
+      {
+        "file": "vehicle_tracks_003.csv",
+        "cars": 147,
+        "rows": 33812,
+        "sha256": "04b890cb80491b6308c5d5c23991839174c2f261995bbae4b9f641d870094249"
+      },
+      {
+        "file": "vehicle_tracks_004.csv",
+        "cars": 100,
+        "rows": 16730,
+        "sha256": "9565a7aff97e95fb479e26dab97e2568100485280621c712bcb6d0a0140d2903"
+      },
+      {
+        "file": "vehicle_tracks_005.csv",
+        "cars": 139,
+        "rows": 27720,
+        "sha256": "6bea8589b94c47465aa414ff1ed953aa3d20afa2234ce77737caa4c81b658869"
+      },
+      {
+        "file": "vehicle_tracks_006.csv",
+        "cars": 115,
+        "rows": 21093,
+        "sha256": "6e88b32bbfd87bfd000820aed934fbacf52dbb5a98a37ecf5e11275b78b8a866"
+      },
+      {
+        "file": "vehicle_tracks_007.csv",
+        "cars": 130,
+        "rows": 20308,
+        "sha256": "4a76f04f2d78f517118f120871190c5a4392883249995772d45b388429619ea9"
+      },
+      {
+        "file": "vehicle_tracks_008.csv",
+        "cars": 142,
+        "rows": 27996,
+        "sha256": "0e41991fc367fb6d0ffa840e01798dd093a5fac217aac67d6629153749d661d3"
+      },
+      {
+        "file": "vehicle_tracks_009.csv",
+        "cars": 141,
+        "rows": 27444,
+        "sha256": "0eebb5f8166c287af1ec41a30af311a6786fdcbec57cc177f981a5020700c3ac"
+      },
+      {
+        "file": "vehicle_tracks_010.csv",
+        "cars": 93,
+        "rows": 14968,
+        "sha256": "05c1968daf007dbf51075d995636b5e521a0f0ed076655421518f886d448d0d3"
+      },
+      {
+        "file": "vehicle_tracks_011.csv",
+        "cars": 135,
+        "rows": 28241,
+        "sha256": "403047471ed2300e9de3df9cccad5c5ec4f2cd5e3e34ff312dc180b04707cdc4"
+      },
+      {
+        "file": "vehicle_tracks_012.csv",
+        "cars": 142,
+        "rows": 29518,
+        "sha256": "eccc6e8b5e0eb8d87dce27e3cde11913914c6d78fed05e771287fdf1ccd837d1"
+      },
+      {
+        "file": "vehicle_tracks_013.csv",
+        "cars": 142,
+        "rows": 27560,
+        "sha256": "5938c3c5b1e152ac30e6364a6a8248d854d46e3e2c5dd050c3f01908e855f220"
+      },
+      {
+        "file": "vehicle_tracks_014.csv",
+        "cars": 148,
+        "rows": 32153,
+        "sha256": "52860fe27314df03a6e145d6babd10081aaa6f036398a652d28d712b46528f73"
+      },
+      {
+        "file": "vehicle_tracks_015.csv",
+        "cars": 157,
+        "rows": 28767,
+        "sha256": "d6cd8449b6283d76cb73ad5b72be4b9bd8db6508a0ce384ff75b80b8935763f1"
+      },
+      {
+        "file": "vehicle_tracks_016.csv",
+        "cars": 122,
+        "rows": 28564,
+        "sha256": "cdcbbc0b41450a82b8831e7947035b2102c4e00362a6cb043da109b9e4e38aaf"
+      },
+      {
+        "file": "vehicle_tracks_017.csv",
+        "cars": 106,
+        "rows": 16355,
+        "sha256": "45b9073236819675103207c2421a9358df001a5820c5995e967b14e6d13eae5f"
+      },
+      {
+        "file": "vehicle_tracks_018.csv",
+        "cars": 138,
+        "rows": 25165,
+        "sha256": "dfafa2f7436351147a0411b432f2fecb6a795a6cfd78e943d70749a0b8f34758"
+      },
+      {
+        "file": "vehicle_tracks_019.csv",
+        "cars": 133,
+        "rows": 21788,
+        "sha256": "ef3c193ffdb96e478da2760cc01a9f6306d772a1fe6134ee31fe204d0ea6853f"
+      },
+      {
+        "file": "vehicle_tracks_020.csv",
+        "cars": 139,
+        "rows": 26881,
+        "sha256": "4795dd137b4874abe9b31e32db7e4192d55017b8a392784ff4ae30352d05e17a"
+      },
+      {
+        "file": "vehicle_tracks_021.csv",
+        "cars": 110,
+        "rows": 17542,
+        "sha256": "f827e2ae9160fa6dabf72900b690e55c6bf21c30a37d56b1e5d7cf3793c350af"
+      }
+    ],
+    "metrics": {
+      "speed_mps": {
+        "n": 59097,
+        "p10": 0.0,
+        "p25": 0.9571,
+        "p50": 2.8921,
+        "p75": 7.0991,
+        "p90": 10.1967
+      },
+      "neighbors_25m": {
+        "n": 59097,
+        "p10": 1.0,
+        "p25": 2.0,
+        "p50": 3.0,
+        "p75": 5.0,
+        "p90": 6.0
+      },
+      "lane_flow_proxy_vph": {
+        "n": 663,
+        "p10": 36.6035,
+        "p25": 70.7706,
+        "p50": 118.507,
+        "p75": 156.0458,
+        "p90": 197.2315
+      }
+    }
+  }
+}

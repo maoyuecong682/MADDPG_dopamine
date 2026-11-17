@@ -1,100 +1,110 @@
-# SMARTS 双车 MADDPG 基线
+# SMARTS 双车驾驶：MADDPG 基线与 Robo-Dopamine 改进
 
-这个项目把两辆独立策略车放入同一个 SMARTS 仿真回合。两车各自读取局部传感器并输出连续控制，训练时各自的 critic 可以看到两车的信息。变道、汇入和无保护左转轮流训练，共享同一套模型和均匀回放池。附带的 smoke/model.pt 是 360 步的 CPU 冒烟检查点，可用来复现管线和诊断失败行为。
+本项目研究一个问题：在变道、汇入和无保护左转中，引入任务进度后，两辆车能否更安全地完成任务？五组实验使用相同的 SMARTS 场景、观测、动作和 MADDPG 网络，通过训练参数切换进度估计、奖励和经验回放。默认运行纯 MADDPG 基线。
 
-## 1. 本机复现
+**当前进度**：五种配置均已通过 CPU 冒烟训练、模型重载和独立评估。每组短跑 360 个环境步、329 次联合更新，每个场景评估 1 回合，均未出现两车安全到达。正式效果比较需要下文的三种子实验。
 
-已验证环境为 Windows 主机上的 WSL2 Ubuntu 24.04、Python 3.11.15、SMARTS 2.0.1、PyTorch CPU。WSL 工作目录为 ~/projects/rl_final。本机已经建好了 a4-baseline 环境，其 PyTorch 来自已有的 snn 环境。打开 Ubuntu 终端执行：
+## 1. 从项目根目录开始
+
+**本机 WSL** 已有 Ubuntu 24.04、Python 3.11 和可用的 CPU 环境。打开 Ubuntu 终端：
 
 ```bash
 cd ~/projects/rl_final
 source ~/venvs/a4-baseline/bin/activate
-export PYTHONHASHSEED=0
-python scenarios.py
-python -m unittest -v test_baseline
-python run.py train --seed 1 --steps 360 --warmup 32 --batch 32 --horizon 60 --out runs/smoke-1
-python run.py eval --model runs/smoke-1/model.pt --episodes 4 --horizon 300 --out runs/smoke-1
 ```
 
-已有检查点可跳过训练，直接运行：
-
-```bash
-python run.py eval --model smoke/model.pt --episodes 4 --out runs/recheck
-```
-
-在 **A5 的新机器**上使用 Linux 或 WSL2、Python 3.11，进入项目后准备独立环境：
+**新机器**使用 Linux x86_64 或 WSL2，在项目根目录用 Python 3.11 创建环境。以下为 CPU 安装示例：
 
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install -U pip wheel
+python -m pip install --upgrade pip wheel
 python -m pip install -r requirements.txt
-# CPU 机器
 python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-export PYTHONHASHSEED=0
-python scenarios.py
-python -m unittest -v test_baseline
 ```
 
-GPU 机器用与显卡及驱动兼容的 CUDA 版 PyTorch 替换上面的 CPU 安装命令，然后验证 `python -c "import torch; print(torch.cuda.is_available())"` 输出 True。SUMO 的 netconvert 由 eclipse-sumo 提供，激活环境后应能执行 `netconvert --version`。场景生成不需要下载数据集。各次训练和评估使用新的输出目录，避免混合不同运行的日志。
+A5 的 GPU 机器在最后一步安装与驱动兼容的 CUDA 版 PyTorch。运行 `python -c "import torch; print(torch.cuda.is_available())"` 确认输出为 `True`，再用 `--device cuda` 训练。[PyTorch 安装入口](https://pytorch.org/get-started/locally/)
 
-## 2. 从场景到一条训练样本
-
-| 文件 | 主要入口 | 负责的工作 |
-|---|---|---|
-| scenarios.py | build(task) | 用 netconvert 构建 SUMO 路网，用 SMARTS Scenario Studio 写入两车任务和背景车流。 |
-| environment.py | Episode、encode、actuator | 创建 HiWayEnvV1，读取原始观测，完成一次联合动作，计算奖励，累计回合指标。 |
-| maddpg.py | MADDPG、Replay | 维护每车的 actor、critic 和目标网络，存储并均匀抽取同步的双车转移，更新参数。 |
-| run.py | train、evaluate | 控制种子、探索、任务轮换和步数，保存模型，加载检查点后独立评估。 |
-| test_baseline.py | BaselineTests | 检查覆盖写入与同步采样、终止掩码、梯度更新，以及三个真实场景中的双车控制。 |
-| smoke/ | train.jsonl、model.pt、evaluation.json | 本次实测的训练记录、检查点、逐回合指标及场景汇总。 |
-
-**场景。** 两车初速 6 m/s，步长 0.1 s。变道场景是一条双车道，两车从不同车道出发，目标在各自起点的另一条车道。汇入场景让匝道车和主路车驶向同一条下游车道。无保护左转场景让一车从西向北左转，另一车从东向西直行，路口按优先权通行。每个场景有四档背景流量，分别为每小时 320、480、640、800 辆的发车设置。背景车由仿真器控制。这里使用程序生成的车辆交通，未使用 INTERACTION 轨迹；行人和非机动车场景尚未覆盖。
-
-**观测。** 每辆车输入 24 个浮点数。前 2 个为速度和转向，随后 2 个为相对目标位置，6 个为最近车道参考路径上三个路点的相对位置。最后 14 个描述距离最近的两辆邻车，每车 7 项，依次为存在标记、相对纵横位置、速度、相对航向的正弦与余弦、纵向相对速度。位置转换到自车前向和右向坐标系，缺失邻车补零。距离和速度按固定物理尺度缩放。目标位置是任务给定的导航输入。
-
-**动作与奖励。** actor 输出两个介于 −1 和 1 的值。第一维为有符号纵向指令，正数映射到油门，负数的绝对值映射到刹车；第二维直接映射到 SMARTS 转向。每车每步奖励为 SMARTS 原始行驶距离增量，发生碰撞、驶离道路、偏离路线、逆行或压路肩任一事件扣 10，无安全事件且到达目标加 10。同一步多项违规只扣一次，并配置这些违规终止对应车辆。±10 是项目选定的基础奖励系数，各实验组应共用。此次使用普通距离、安全和到达奖励及全池均匀采样。
-
-**一条转移。** Replay 的每行是 `(obs, act, reward, next_obs, alive, next_alive)`。其中 obs 是 [2,24]，act 是 [2,2]，奖励和布尔掩码都是 [2]。同一行的两车数据来自同一仿真时刻，每个 batch 对整行均匀无放回抽样。已退出车辆的状态和动作补零，critic 输入另含存活标记。单车退出时停止对其后续占位行计算损失，另一辆车可继续。接口在真正终止时关闭 bootstrap。外部 horizon 和训练步数用尽属于采样截断，保留最后真实下一状态的 bootstrap，下一回合重新 reset。
-
-## 3. MADDPG 怎么更新
-
-每车单独有一个 actor 和一个 critic，均为两层 128 单元 ReLU 的 MLP。actor 的末层用 tanh。每个 critic 接收两车 48 维观测、4 维动作、2 维存活标记，输出本车的标量 Q 值。
-
-1. 训练初期均匀随机探索。之后使用 actor 动作叠加标准差 0.15 的高斯噪声，并裁剪到合法范围。
-2. 目标 actor 产生下一步联合动作。第 i 辆车的 TD 目标为 `r_i + gamma * next_alive_i * target_Q_i(next_joint)`。critic 最小化有效样本上的均方误差。
-3. 更新第 i 个 actor 时，仅用该 actor 的输出替换回放中本车的动作，保留同期另一车的真实动作，最大化 critic 对本车的估值。
-4. 每次更新后，目标参数取 `(1-tau)*旧目标 + tau*在线参数`。评估只调用两车 actor，关闭噪声、采样和梯度更新。
-
-正式默认值为回放容量 100000，batch 128，warmup 1000 环境步，折扣 0.99，软更新系数 0.01。actor 和 critic 的 Adam 学习率分别为 0.0001、0.001。满足 warmup 和 batch 条件后，每个环境步做一次联合更新。两车同时行动算一个环境步。日志 losses 依次记录最近一次更新中各有效车辆的 critic MSE 均值和 actor 损失均值。model.pt 保存在线和目标网络的权重以及训练步数、种子和更新计数。它支持独立评估，未保存优化器和回放池以供断点续训。
-
-## 4. 本次测试和评估
-
-三个自动化测试通过。360 步短跑使用种子 1、batch 32、warmup 32、每回合最多 60 步，覆盖全部三种任务，8 段采样共 329 次联合更新。随后从磁盘加载模型，在单独的评估种子上每个任务测 4 回合，限时均为 300 步（30 s），覆盖四档车流。
-
-| 任务 | 回合数 | 碰撞率 | 安全成功率 | 成功回合平均通行时间 | 窗口内急减速次数/回合 |
-|---|---:|---:|---:|---:|---:|
-| 变道 | 4 | 100% | 0% | 无成功样本 | 0 |
-| 汇入 | 4 | 100% | 0% | 无成功样本 | 0 |
-| 无保护左转 | 4 | 100% | 0% | 无成功样本 | 0 |
-
-碰撞率按回合计数，两辆受控车中任意一辆发生碰撞即计一次。成功要求两辆车在时限内均到达自己的目标且全回合无上述安全事件。成功用时取最后一辆车完成时的仿真时间；没有成功样本时 JSON 中为 null。急减速用相邻步车速差除以 0.1 s，严格低于 −3 m/s² 时计入；同一车在窗口内连续满足条件只计一次，两车次数相加。变道窗口为地图 x 坐标 35 至 100 m，汇入和左转窗口分别为距汇合点 (75,50) 和路口中心 (80,80) 25 m 以内。
-
-在变道评估种子 2000000000 上，两车第一步纵向动作约为 −0.989 和 −0.978，约 1.5 s 后车速接近零，其中一辆被背景车追尾。相同起点给固定 0.35 油门、零转向时，两车在 3 s 内均由 6 m/s 加速至约 10.9 m/s。该对照检查了控制链路。停在冲突窗口外也可能得到零次窗口内急减速，不能单独据此判断舒适性。当前权重尚未学会完成驾驶任务；短跑已经验证在线采集、网络更新、存盘、重新加载和独立评估。
-
-## 5. A5 正式训练
-
-在项目根目录、已激活的 Linux 环境中执行。下面按三组种子各训练 50000 环境步，各模型在相同测试清单上每场景测 20 回合。若使用 CPU，可将 cuda 改为 cpu。
+**建图并运行测试**。场景生成器根据随项目提供的统计文件构建 3 种任务 × 4 档交通条件。跨机器复现时，在新环境中重新生成场景：
 
 ```bash
 export PYTHONHASHSEED=0
-for seed in 1 2 3; do
-  python run.py train --device cuda --seed "$seed" --steps 50000 --out "runs/seed-$seed" || break
-  python run.py eval --device cuda --model "runs/seed-$seed/model.pt" --episodes 20 --out "runs/seed-$seed" || break
+netconvert --version
+python scenarios.py
+python -m unittest -v test_baseline test_dopamine
+```
+
+**跑一次完整版**。已有冻结的进度模型 H，可直接用于训练。将第一条命令的 `--mode dopamine` 改为 `--mode baseline` 即可跑基线。每次训练选一个新的输出目录，再用同一目录中的检查点评估：
+
+```bash
+python run.py train --mode dopamine --seed 1 --device cpu --steps 360 --warmup 32 --batch 32 --horizon 60 --out runs/quick-full
+python run.py eval --model runs/quick-full/model.pt --episodes 4 --horizon 300 --out runs/quick-full
+```
+
+`--steps` 是三个任务合计的环境步数，两辆车同时行动计一步。`--horizon` 是单回合上限，每步 0.1 秒。`eval --episodes 4` 表示**每个场景**测 4 回合，共 12 回合。
+
+## 2. 环境、数据和基础算法
+
+| 任务 | 两辆策略车要完成的动作 |
+|---|---|
+| 变道 | 从不同车道出发，各自到达另一条车道上的目标。 |
+| 汇入 | 匝道车与主路车进入同一下游车道。 |
+| 无保护左转 | 一车左转，一车对向直行。另有一名背景行人以 1.2 m/s 沿路侧固定路线行走，仅两辆车参与策略更新。 |
+
+INTERACTION DR v1.1 两个站点的 33 段记录、13,339 条汽车轨迹用于离线标定背景车速、发车率、变道间距和汇入相对位置。日常建图读取已计算的统计文件；训练样本由两辆策略车与 SMARTS 在线交互生成。[统计结果](interaction.json) · [校准方法与原始数据复现步骤](calibration.md)
+
+每车 actor 根据 24 维局部观测输出纵向控制和转向。训练时，每车的 critic 读取两车同步的观测、动作与存活标记。基础奖励取该车行驶距离增量，发生碰撞、驶离道路、偏离路线、逆行或压路肩时扣 10，无安全违规且到达目标时加 10。一辆车退出后，另一辆仍可继续行动。
+
+## 3. 五种实验配置
+
+| `--mode` | 进度估计 | 写入回放的奖励 | 联合样本采样 |
+|---|---|---|---|
+| `baseline` | 关闭 | 基础奖励 | 全池均匀 |
+| `dopamine` | B/I/F 融合 | 归一化＋势函数塑形 | 任务→进度桶→转移 |
+| `no-reward` | B/I/F 融合 | 基础奖励 | 任务→进度桶→转移 |
+| `f-only` | 仅起点参照 F | 归一化＋势函数塑形 | 任务→进度桶→转移 |
+| `no-replay` | B/I/F 融合 | 归一化＋势函数塑形 | 全池均匀 |
+
+**进度模型 H** 分别以目标 B、上一时刻 I 和起点 F 为参照，预测相对进步或退步，再换算到同一尺度取均值。随项目提供的 H 使用独立 SMARTS 轨迹训练，按完整回合分为训练 24、验证 6、测试 6。B/I/F 在留出回合上的进度 MAE 为 0.0040，衡量的是对规则标签的拟合程度。[冻结权重](progress_artifacts/h.pt) · [离线报告](progress_artifacts/report.json)
+
+**奖励与回放**：每车的改进奖励为 `r_base / C_task + β × (γ × φ_next − φ_current)`。真正终止时下一势值置零，时间截断时保留。默认 β=1，三个任务的尺度依次为 100、120、120。分层回放先抽非空任务，再抽非空进度桶，最后抽取一条双车联合转移。默认每任务 5 桶，以转移开始时仍在场车辆的平均进度分桶。[公式、单项开关、消融设计与论文依据](dopamine.md)
+
+## 4. A5 正式训练与评估
+
+五种配置各跑 3 个训练种子，共 15 次训练。先在目标机器上校准耗时，再统一确定环境步预算。下例按每次 50,000 环境步执行。各组共用同一份 H、测试种子和交通档位，评估关闭探索噪声：
+
+```bash
+set -e
+export PYTHONHASHSEED=0
+for mode in baseline dopamine no-reward f-only no-replay; do
+  for seed in 1 2 3; do
+    d="runs/formal/$mode/seed-$seed"
+    python run.py train --mode "$mode" --seed "$seed" --device cuda --steps 50000 --out "$d"
+    python run.py eval --device cuda --model "$d/model.pt" --episodes 20 --horizon 300 --out "$d"
+  done
 done
 ```
 
-train.jsonl 每行对应一个完成或截断的采样回合，含累计环境步、更新次数、累计训练墙钟时间、两车各自回报和安全事件。最后一行可能因总预算用尽而缩短。evaluation.json 的 per_task 用于逐场景汇报，episodes 保留回合种子、交通档位、到达车辆数、违规、用时和两车回报。测试种子从 2000000000 起按回合递增，交通档位按回合轮换。训练与评估使用相同的道路拓扑和四档流量，各自使用独立回合；这些结果衡量同类场景表现。正式比较宜先计算每个训练种子的各项场景指标，再报告三个训练种子的均值及样本标准差；成功用时同时列出成功样本数。此轮未执行正式三种子训练。
+每个模型共测 60 回合。按场景先计算每个训练种子的指标，再汇报三个种子的均值和样本标准差：
 
-环境调用依据 [SMARTS 2.0.1 上游实现](https://github.com/huawei-noah/SMARTS/tree/v2.0.1)，算法基于 [Lowe 等人的 MADDPG](https://arxiv.org/abs/1706.02275)。项目中的 PyTorch 训练器、观测适配、场景与指标为本次实现。
+| 指标 | 统计口径 |
+|---|---|
+| 碰撞率 ↓ | 任一受控车发生碰撞，该回合计一次。 |
+| 安全成功率 ↑ | 两辆车都在时限内到达各自目标，且全回合无安全违规。 |
+| 成功通行时间 ↓ | 仅对成功回合统计，以最后一辆车到达时的仿真时间为准。无成功样本时为 `null`。 |
+| 冲突窗口内急减速次数 ↓ | 速度变化率低于 −3 m/s²，同一辆车连续满足条件计一次，两车相加后按回合取均值。 |
 
+## 5. 代码和运行产物
+
+| 文件 | 用途 |
+|---|---|
+| [scenarios.py](scenarios.py) · [environment.py](environment.py) | 构建校准场景，处理观测、动作、基础奖励与安全事件。 |
+| [interaction_stats.py](interaction_stats.py) | 从原始 INTERACTION 轨迹重新计算场景参数。 |
+| [maddpg.py](maddpg.py) · [run.py](run.py) | 定义网络、均匀回放与更新规则，提供混合训练和分场景评估入口。 |
+| [fit_progress.py](fit_progress.py) · [progress.py](progress.py) | 采集独立轨迹、拟合 H，并在训练时估计进度。 |
+| [progress_replay.py](progress_replay.py) | 管理任务与进度桶，保持双车样本按仿真时刻对齐。 |
+| [test_baseline.py](test_baseline.py) · [test_dopamine.py](test_dopamine.py) | 测试真实场景、固定行人、网络更新、进度递推、终止处理和分层采样。 |
+
+每次训练的输出目录包含 `config.json`（实际开关与 H 摘要）、`train.jsonl`（逐回合日志）和 `model.pt`（供评估加载的检查点）。日志里的 `returns` 是基础奖励回报，`training_returns` 是用于更新 critic 的回报。评估生成 `evaluation.json`，其中 `per_task` 是场景汇总，`episodes` 保留逐回合记录。
+
+版本管理保留源码、校准统计、冻结 H 及报告。[smoke/](smoke/) 保存最初场景的历史冒烟记录。本机的 `runs/interaction-smoke/` 和 `runs/dopamine-smoke/` 分别存放校准后的基线及五种配置的冒烟结果。`runs/` 和生成的 `scenarios/` 由 Git 忽略，新的检出目录可按第 1 节重建。

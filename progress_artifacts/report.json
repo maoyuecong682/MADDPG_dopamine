@@ -1,0 +1,538 @@
+{
+  "format": 1,
+  "selected_epoch": 69,
+  "val_hop_mae": 0.008537684567272663,
+  "test": {
+    "bif": {
+      "mae": 0.004020298516677264,
+      "direction_accuracy": 0.9912445278298937,
+      "states": 1611,
+      "directional_steps": 1599
+    },
+    "f": {
+      "mae": 0.0054474228647353115,
+      "direction_accuracy": 0.9787367104440275,
+      "states": 1611,
+      "directional_steps": 1599
+    },
+    "i": {
+      "mae": 0.04706123378425897,
+      "direction_accuracy": 0.8805503439649781,
+      "states": 1611,
+      "directional_steps": 1599
+    },
+    "b": {
+      "mae": 0.004830865959465171,
+      "direction_accuracy": 0.9974984365228268,
+      "states": 1611,
+      "directional_steps": 1599
+    }
+  },
+  "train_pairs": 61440,
+  "split_manifest": [
+    {
+      "split": "train",
+      "seed": 1200000000,
+      "task": "lane_change",
+      "variant": 0,
+      "lengths": [
+        164,
+        213
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000001,
+      "task": "merge",
+      "variant": 0,
+      "lengths": [
+        107,
+        207
+      ],
+      "max_labels": [
+        0.3993817865848541,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000002,
+      "task": "left_turn",
+      "variant": 0,
+      "lengths": [
+        74,
+        74
+      ],
+      "max_labels": [
+        0.435043603181839,
+        0.4611261188983917
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000003,
+      "task": "lane_change",
+      "variant": 1,
+      "lengths": [
+        105,
+        197
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000004,
+      "task": "merge",
+      "variant": 1,
+      "lengths": [
+        64,
+        163
+      ],
+      "max_labels": [
+        0.3998167812824249,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000005,
+      "task": "left_turn",
+      "variant": 1,
+      "lengths": [
+        75,
+        221
+      ],
+      "max_labels": [
+        0.4777807593345642,
+        0.8312418460845947
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000006,
+      "task": "lane_change",
+      "variant": 2,
+      "lengths": [
+        147,
+        145
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000007,
+      "task": "merge",
+      "variant": 2,
+      "lengths": [
+        95,
+        95
+      ],
+      "max_labels": [
+        0.39874470233917236,
+        0.35027244687080383
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000008,
+      "task": "left_turn",
+      "variant": 2,
+      "lengths": [
+        72,
+        72
+      ],
+      "max_labels": [
+        0.4380645155906677,
+        0.4812021553516388
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000009,
+      "task": "lane_change",
+      "variant": 3,
+      "lengths": [
+        98,
+        188
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000010,
+      "task": "merge",
+      "variant": 3,
+      "lengths": [
+        63,
+        221
+      ],
+      "max_labels": [
+        0.398534893989563,
+        0.8524897694587708
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000011,
+      "task": "left_turn",
+      "variant": 3,
+      "lengths": [
+        83,
+        142
+      ],
+      "max_labels": [
+        0.4432651400566101,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000012,
+      "task": "lane_change",
+      "variant": 0,
+      "lengths": [
+        163,
+        221
+      ],
+      "max_labels": [
+        1.0,
+        0.8807065486907959
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000013,
+      "task": "merge",
+      "variant": 0,
+      "lengths": [
+        72,
+        221
+      ],
+      "max_labels": [
+        0.39995476603507996,
+        0.7028704881668091
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000014,
+      "task": "left_turn",
+      "variant": 0,
+      "lengths": [
+        88,
+        193
+      ],
+      "max_labels": [
+        0.4431424140930176,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000015,
+      "task": "lane_change",
+      "variant": 1,
+      "lengths": [
+        101,
+        205
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000016,
+      "task": "merge",
+      "variant": 1,
+      "lengths": [
+        90,
+        221
+      ],
+      "max_labels": [
+        0.3984817564487457,
+        0.7686623334884644
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000017,
+      "task": "left_turn",
+      "variant": 1,
+      "lengths": [
+        87,
+        185
+      ],
+      "max_labels": [
+        0.4424206614494324,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000018,
+      "task": "lane_change",
+      "variant": 2,
+      "lengths": [
+        150,
+        177
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000019,
+      "task": "merge",
+      "variant": 2,
+      "lengths": [
+        66,
+        66
+      ],
+      "max_labels": [
+        0.40160825848579407,
+        0.35788509249687195
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000020,
+      "task": "left_turn",
+      "variant": 2,
+      "lengths": [
+        83,
+        208
+      ],
+      "max_labels": [
+        0.4437156617641449,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000021,
+      "task": "lane_change",
+      "variant": 3,
+      "lengths": [
+        114,
+        142
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000022,
+      "task": "merge",
+      "variant": 3,
+      "lengths": [
+        78,
+        162
+      ],
+      "max_labels": [
+        0.4013272523880005,
+        1.0
+      ]
+    },
+    {
+      "split": "train",
+      "seed": 1200000023,
+      "task": "left_turn",
+      "variant": 3,
+      "lengths": [
+        93,
+        142
+      ],
+      "max_labels": [
+        0.44348782300949097,
+        1.0
+      ]
+    },
+    {
+      "split": "validation",
+      "seed": 1300000000,
+      "task": "lane_change",
+      "variant": 1,
+      "lengths": [
+        161,
+        179
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "validation",
+      "seed": 1300000001,
+      "task": "merge",
+      "variant": 1,
+      "lengths": [
+        59,
+        221
+      ],
+      "max_labels": [
+        0.3992993235588074,
+        0.7807224988937378
+      ]
+    },
+    {
+      "split": "validation",
+      "seed": 1300000002,
+      "task": "left_turn",
+      "variant": 1,
+      "lengths": [
+        93,
+        221
+      ],
+      "max_labels": [
+        0.4432125985622406,
+        1.0
+      ]
+    },
+    {
+      "split": "validation",
+      "seed": 1300000003,
+      "task": "lane_change",
+      "variant": 2,
+      "lengths": [
+        183,
+        197
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "validation",
+      "seed": 1300000004,
+      "task": "merge",
+      "variant": 2,
+      "lengths": [
+        113,
+        169
+      ],
+      "max_labels": [
+        0.3980557918548584,
+        1.0
+      ]
+    },
+    {
+      "split": "validation",
+      "seed": 1300000005,
+      "task": "left_turn",
+      "variant": 2,
+      "lengths": [
+        84,
+        147
+      ],
+      "max_labels": [
+        0.44317513704299927,
+        1.0
+      ]
+    },
+    {
+      "split": "test",
+      "seed": 1400000000,
+      "task": "lane_change",
+      "variant": 2,
+      "lengths": [
+        142,
+        158
+      ],
+      "max_labels": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "split": "test",
+      "seed": 1400000001,
+      "task": "merge",
+      "variant": 2,
+      "lengths": [
+        59,
+        157
+      ],
+      "max_labels": [
+        0.4034806787967682,
+        1.0
+      ]
+    },
+    {
+      "split": "test",
+      "seed": 1400000002,
+      "task": "left_turn",
+      "variant": 2,
+      "lengths": [
+        68,
+        221
+      ],
+      "max_labels": [
+        0.44316136837005615,
+        0.7591634392738342
+      ]
+    },
+    {
+      "split": "test",
+      "seed": 1400000003,
+      "task": "lane_change",
+      "variant": 3,
+      "lengths": [
+        157,
+        221
+      ],
+      "max_labels": [
+        1.0,
+        0.966242790222168
+      ]
+    },
+    {
+      "split": "test",
+      "seed": 1400000004,
+      "task": "merge",
+      "variant": 3,
+      "lengths": [
+        62,
+        137
+      ],
+      "max_labels": [
+        0.4036298394203186,
+        1.0
+      ]
+    },
+    {
+      "split": "test",
+      "seed": 1400000005,
+      "task": "left_turn",
+      "variant": 3,
+      "lengths": [
+        71,
+        158
+      ],
+      "max_labels": [
+        0.4430603086948395,
+        1.0
+      ]
+    }
+  ]
+}

@@ -1,5 +1,29 @@
+# Python 运行环境与缓存
+.venv/
+venv/
 __pycache__/
 *.py[cod]
-.venv/
-scenarios/
-runs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# SMARTS/SUMO 构建的场景；训练、评估和检查点输出
+/scenarios/
+/runs/
+
+# 本地放在仓库中的 INTERACTION 原始发布包及解压目录
+/INTERACTION-Dataset-DR-*.rar
+/INTERACTION-Dataset-DR-*.zip
+/INTERACTION-Dataset-DR-*/
+/tracks.rar
+/recorded_trackfiles/
+/maps/DR_*.osm
+
+# 编辑器及操作系统生成的文件
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# interaction.json、progress_artifacts/ 和历史 smoke/ 随项目交付。

@@ -1,0 +1,224 @@
+{
+  "model": "smoke/model.pt",
+  "training_seed": 1,
+  "training_steps": 360,
+  "updates": 329,
+  "horizon": 300,
+  "per_task": {
+    "lane_change": {
+      "episodes": 4,
+      "collision_rate": 1.0,
+      "success_rate": 0.0,
+      "mean_success_time_s": null,
+      "mean_hard_brakes": 0.0
+    },
+    "merge": {
+      "episodes": 4,
+      "collision_rate": 1.0,
+      "success_rate": 0.0,
+      "mean_success_time_s": null,
+      "mean_hard_brakes": 0.0
+    },
+    "left_turn": {
+      "episodes": 4,
+      "collision_rate": 1.0,
+      "success_rate": 0.0,
+      "mean_success_time_s": null,
+      "mean_hard_brakes": 0.0
+    }
+  },
+  "episodes": [
+    {
+      "task": "lane_change",
+      "seed": 2000000000,
+      "variant": 0,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        -8.421357485545741,
+        1.490707552910294
+      ]
+    },
+    {
+      "task": "lane_change",
+      "seed": 2000000001,
+      "variant": 1,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        -8.421357550367247,
+        1.5310194452304131
+      ]
+    },
+    {
+      "task": "lane_change",
+      "seed": 2000000002,
+      "variant": 2,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        -8.421361887358216,
+        1.5045833433032385
+      ]
+    },
+    {
+      "task": "lane_change",
+      "seed": 2000000003,
+      "variant": 3,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        -8.421351904224139,
+        1.490347109582217
+      ]
+    },
+    {
+      "task": "merge",
+      "seed": 2000000000,
+      "variant": 0,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.497352045872205,
+        -8.407976904127281
+      ]
+    },
+    {
+      "task": "merge",
+      "seed": 2000000001,
+      "variant": 1,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.4947469962176,
+        -8.408147687412566
+      ]
+    },
+    {
+      "task": "merge",
+      "seed": 2000000002,
+      "variant": 2,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.4622003904667054,
+        -8.408254852722166
+      ]
+    },
+    {
+      "task": "merge",
+      "seed": 2000000003,
+      "variant": 3,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.464825741049026,
+        -8.408321891271044
+      ]
+    },
+    {
+      "task": "left_turn",
+      "seed": 2000000000,
+      "variant": 0,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.5156176731333062,
+        -8.413713639769412
+      ]
+    },
+    {
+      "task": "left_turn",
+      "seed": 2000000001,
+      "variant": 1,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.516427974349373,
+        -8.412934842155664
+      ]
+    },
+    {
+      "task": "left_turn",
+      "seed": 2000000002,
+      "variant": 2,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.5160719498255872,
+        -8.413537877037015
+      ]
+    },
+    {
+      "task": "left_turn",
+      "seed": 2000000003,
+      "variant": 3,
+      "steps": 300,
+      "collision": true,
+      "success": false,
+      "reached_goals": 0,
+      "unsafe": true,
+      "passage_s": null,
+      "hard_brakes": 0,
+      "returns": [
+        1.5160503292765455,
+        -8.414569021559146
+      ]
+    }
+  ]
+}

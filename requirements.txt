@@ -1,0 +1,10 @@
+# Linux x86_64, Python 3.11. Install CPU or CUDA PyTorch separately.
+smarts[sumo,gymnasium]==2.0.1
+eclipse-sumo==1.24.0
+gymnasium==0.29.1
+pybullet==3.2.7
+numpy==1.26.4
+scipy==1.14.1
+trimesh==4.6.4
+setuptools==79.0.1
+
